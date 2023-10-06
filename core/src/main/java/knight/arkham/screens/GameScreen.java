@@ -7,14 +7,10 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import knight.arkham.Asteroid;
 import knight.arkham.helpers.AssetsHelper;
-import knight.arkham.helpers.GameContactListener;
 import knight.arkham.objects.*;
 import knight.arkham.scenes.Hud;
 import knight.arkham.scenes.PauseMenu;
@@ -25,13 +21,10 @@ public class GameScreen extends ScreenAdapter {
     public SpriteBatch batch;
     private final Hud hud;
     private final PauseMenu pauseMenu;
-    private final World world;
-    private final Box2DDebugRenderer debugRenderer;
     private final Player player;
     private final Array<Structure> structures;
     private final Array<Alien> aliens;
     private final Sound winSound;
-    private float bulletSpawnTime;
     private final Array<AlienBullet> alienBullets;
     public static boolean isGamePaused;
 
@@ -44,18 +37,12 @@ public class GameScreen extends ScreenAdapter {
 
         batch = new SpriteBatch();
 
-        world = new World(new Vector2(0, 0), true);
+        player = new Player(new Rectangle(1000, 350, 32, 32));
 
-        world.setContactListener(new GameContactListener());
-
-        debugRenderer = new Box2DDebugRenderer();
-
-        player = new Player(new Rectangle(1000, 350, 32, 32), world);
-
-        Structure structure = new Structure(new Rectangle(650, 450, 48, 32), world);
-        Structure structure2 = new Structure(new Rectangle(900, 450, 48, 32), world);
-        Structure structure3 = new Structure(new Rectangle(1150, 450, 48, 32), world);
-        Structure structure4 = new Structure(new Rectangle(1400, 450, 48, 32), world);
+        Structure structure = new Structure(new Rectangle(650, 450, 48, 32));
+        Structure structure2 = new Structure(new Rectangle(900, 450, 48, 32));
+        Structure structure3 = new Structure(new Rectangle(1150, 450, 48, 32));
+        Structure structure4 = new Structure(new Rectangle(1400, 450, 48, 32));
 
         structures = new Array<>();
 
@@ -95,7 +82,7 @@ public class GameScreen extends ScreenAdapter {
 
             for (int j = 0; j < 11; j++) {
 
-                temporalAliens.add(new Alien(positionX, positionY, world, spritePath, alienPoints));
+                temporalAliens.add(new Alien(positionX, positionY, spritePath, alienPoints));
                 positionX += 60;
             }
 
@@ -114,23 +101,13 @@ public class GameScreen extends ScreenAdapter {
 
     private void update(float deltaTime) {
 
-        world.step(1 / 60f, 6, 2);
-
         player.update(deltaTime);
 
         for (Structure structure : structures)
             structure.update();
 
-        bulletSpawnTime += deltaTime;
-
-        for (Alien alien : aliens) {
+        for (Alien alien : aliens)
             alien.update(deltaTime);
-
-            if (bulletSpawnTime > 5){
-                alienBullets.add(alien.shootBullet());
-                bulletSpawnTime = 0;
-            }
-        }
 
         for (AlienBullet bullet : alienBullets)
             bullet.update();
@@ -174,8 +151,6 @@ public class GameScreen extends ScreenAdapter {
         batch.end();
 
         hud.stage.draw();
-
-        debugRenderer.render(world, camera.combined);
     }
 
     @Override
@@ -191,9 +166,7 @@ public class GameScreen extends ScreenAdapter {
         hud.dispose();
         pauseMenu.dispose();
         winSound.dispose();
-        world.dispose();
         batch.dispose();
-        debugRenderer.dispose();
 
         for (Structure structure : structures)
             structure.dispose();

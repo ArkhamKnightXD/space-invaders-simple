@@ -31,9 +31,9 @@ public class Asteroid extends Game {
         screenWidth = Gdx.graphics.getWidth();
         screenHeight = Gdx.graphics.getHeight();
 
-        viewport = new FitViewport(screenWidth / 32f, screenHeight / 32f, camera);
+        viewport = new FitViewport(screenWidth, screenHeight, camera);
 
-        camera.position.set(screenWidth / 32f, screenHeight / 32f, 0);
+        camera.position.set(screenWidth, screenHeight, 0);
 
         uiSkin = new AssetDescriptor<>("ui/uiskin.json", Skin.class, new SkinLoader.SkinParameter("ui/uiskin.atlas"));
 
