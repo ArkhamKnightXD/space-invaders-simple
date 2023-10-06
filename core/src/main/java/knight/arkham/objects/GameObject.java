@@ -22,6 +22,10 @@ public abstract class GameObject {
         batch.draw(sprite, actualBounds.x, actualBounds.y, actualBounds.width, actualBounds.height);
     }
 
+    public Rectangle getBounds() {
+        return actualBounds;
+    }
+
     public void dispose() {
         sprite.dispose();
         actionSound.dispose();

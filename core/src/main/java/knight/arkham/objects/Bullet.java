@@ -11,21 +11,22 @@ public class Bullet extends GameObject {
     public Bullet(Vector2 position) {
         super(
             new Rectangle(
-                position.x, position.y + 15, 16, 16
+                position.x + 8, position.y + 15, 16, 16
             ), "images/ball.png", "fall.wav"
         );
-
-//        body.setLinearVelocity(0, 30);
     }
 
 
-    public void update(){
+    public void update(float deltaTime){
 
         if (setToDestroy && !isDestroyed)
             destroyBullet();
 
-        else if (actualBounds.y > 1000 || actualBounds.y < 200)
+        else if (actualBounds.y > 1000)
             setToDestroy = true;
+
+        else
+            actualBounds.y += 400 * deltaTime;
     }
 
     private void destroyBullet() {

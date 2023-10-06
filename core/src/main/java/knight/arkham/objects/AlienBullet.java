@@ -14,18 +14,19 @@ public class AlienBullet extends GameObject {
                 position.x, position.y, 16, 16
             ), "images/ball.png", "fall.wav"
         );
-
-//        body.setLinearVelocity(0, -15);
     }
 
 
-    public void update(){
+    public void update(float deltaTime){
 
         if (setToDestroy && !isDestroyed)
             destroyBullet();
 
-        else if (actualBounds.y < 200)
+        else if (actualBounds.y < 300)
             setToDestroy = true;
+
+        else
+            actualBounds.y -= 200 * deltaTime;
     }
 
     private void destroyBullet() {
