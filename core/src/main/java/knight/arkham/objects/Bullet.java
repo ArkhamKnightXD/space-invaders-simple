@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Bullet extends GameObject {
     private boolean setToDestroy;
-    private boolean isDestroyed;
+    public boolean isDestroyed;
 
     public Bullet(Vector2 position) {
         super(

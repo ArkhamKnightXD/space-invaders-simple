@@ -18,8 +18,6 @@ import knight.arkham.objects.*;
 import knight.arkham.scenes.Hud;
 import knight.arkham.scenes.PauseMenu;
 
-import java.util.Iterator;
-
 public class GameScreen extends ScreenAdapter {
     private final Asteroid game;
     private final OrthographicCamera camera;
@@ -136,7 +134,7 @@ public class GameScreen extends ScreenAdapter {
             alien.update(deltaTime);
 
             for (Bullet bullet : bullets)
-                alien.hitByTheBullet(bullet.getBounds());
+                alien.hitByTheBullet(bullet);
         }
 
         for (AlienBullet alienBullet : alienBullets)
