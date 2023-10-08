@@ -9,22 +9,17 @@ public class Alien extends GameObject {
     private boolean setToDestroy;
     private final int alienPoints;
     private float stateTimer;
-    private float velocityX;
     private float changeVelocityTimer;
+    private float velocityX;
     private boolean shouldGoDown;
 
     public Alien(int positionX, int positionY, String spritePath, int points) {
         super(
-            new Rectangle(
-                720 + positionX,
-                850 - positionY,
-                32, 32
-            ), spritePath, "okay.wav"
+            new Rectangle(720 + positionX, 850 - positionY, 32, 32),
+            spritePath, "okay.wav"
         );
         alienPoints = points;
-
         velocityX = 20;
-//        body.setLinearVelocity(velocityX,0);
     }
 
     public void update(float deltaTime) {
@@ -36,25 +31,26 @@ public class Alien extends GameObject {
         changeVelocityTimer += deltaTime;
 
         if (stateTimer > 0.5f){
-//            body.setLinearVelocity(velocityX,0);
+
+            actualBounds.x += velocityX;
 
             stateTimer = 0;
 
-        } else if (changeVelocityTimer > 8){
+        } else if (changeVelocityTimer > 4.5f){
 
             velocityX *= -1;
-            changeVelocityTimer = -8;
+            actualBounds.x += velocityX;
+            changeVelocityTimer = -4.5f;
 
             stateTimer = 0;
 
             shouldGoDown = true;
         } else if (shouldGoDown) {
 
-//            body.setLinearVelocity(0,-40);
+            actualBounds.y -= 40;
 
             shouldGoDown = false;
-        } //else
-//            body.setLinearVelocity(0,0);
+        }
     }
 
     private void destroyAlien() {
@@ -68,7 +64,6 @@ public class Alien extends GameObject {
         if (!isDestroyed)
             super.draw(batch);
     }
-
 
     public boolean hitByTheBullet(Bullet bullet) {
 
