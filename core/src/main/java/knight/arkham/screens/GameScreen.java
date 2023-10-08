@@ -17,7 +17,6 @@ import knight.arkham.helpers.AssetsHelper;
 import knight.arkham.objects.*;
 import knight.arkham.scenes.Hud;
 import knight.arkham.scenes.PauseMenu;
-
 import java.util.Iterator;
 
 public class GameScreen extends ScreenAdapter {
@@ -35,7 +34,6 @@ public class GameScreen extends ScreenAdapter {
     private long lastAlienBulletTime;
     private float bulletSpawnTime;
     public static boolean isGamePaused;
-
 
     public GameScreen() {
 
@@ -58,16 +56,16 @@ public class GameScreen extends ScreenAdapter {
 
         aliens = createAliens();
 
+        bullets = new Array<>();
+        alienBullets = new Array<>();
+
         winSound = AssetsHelper.loadSound("win.wav");
 
         hud = new Hud();
         pauseMenu = new PauseMenu();
 
-        bullets = new Array<>();
-        alienBullets = new Array<>();
         isGamePaused = false;
     }
-
 
     private Array<Alien> createAliens() {
         int positionX;
@@ -88,7 +86,6 @@ public class GameScreen extends ScreenAdapter {
             else
                 spritePath = "images/red-alien.png";
 
-
             for (int j = 0; j < 11; j++) {
 
                 temporalAliens.add(new Alien(positionX, positionY, spritePath, alienPoints));
@@ -101,7 +98,6 @@ public class GameScreen extends ScreenAdapter {
 
         return temporalAliens;
     }
-
 
     @Override
     public void resize(int width, int height) {
@@ -236,7 +232,6 @@ public class GameScreen extends ScreenAdapter {
 
     @Override
     public void hide() {
-
         dispose();
     }
 

@@ -16,7 +16,6 @@ public class AlienBullet extends GameObject {
         );
     }
 
-
     public void update(float deltaTime){
 
         if (setToDestroy && !isDestroyed)

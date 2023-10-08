@@ -16,7 +16,6 @@ public class Bullet extends GameObject {
         );
     }
 
-
     public void update(float deltaTime){
 
         if (setToDestroy && !isDestroyed)
