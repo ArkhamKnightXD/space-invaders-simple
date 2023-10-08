@@ -10,9 +10,8 @@ public class Bullet extends GameObject {
 
     public Bullet(Vector2 position) {
         super(
-            new Rectangle(
-                position.x + 8, position.y + 15, 16, 16
-            ), "images/ball.png", "fall.wav"
+            new Rectangle(position.x + 8, position.y + 15, 16, 16),
+            "images/ball.png", "fall.wav"
         );
     }
 

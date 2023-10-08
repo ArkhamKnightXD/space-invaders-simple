@@ -10,9 +10,8 @@ public class AlienBullet extends GameObject {
 
     public AlienBullet(Vector2 position) {
         super(
-            new Rectangle(
-                position.x, position.y, 16, 16
-            ), "images/ball.png", "fall.wav"
+            new Rectangle(position.x, position.y, 16, 16),
+            "images/ball.png", "fall.wav"
         );
     }
 
