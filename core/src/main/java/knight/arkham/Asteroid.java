@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import knight.arkham.screens.GameScreen;
+import knight.arkham.screens.MainMenuScreen;
 
 public class Asteroid extends Game {
     public static Asteroid INSTANCE;
@@ -37,6 +37,6 @@ public class Asteroid extends Game {
 
         uiSkin = new AssetDescriptor<>("ui/uiskin.json", Skin.class, new SkinLoader.SkinParameter("ui/uiskin.atlas"));
 
-        setScreen(new GameScreen());
+        setScreen(new MainMenuScreen());
     }
 }

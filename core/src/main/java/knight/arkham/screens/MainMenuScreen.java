@@ -15,9 +15,6 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import knight.arkham.Asteroid;
 import knight.arkham.helpers.AssetsHelper;
 
-import static knight.arkham.helpers.Constants.FULL_SCREEN_HEIGHT;
-import static knight.arkham.helpers.Constants.FULL_SCREEN_WIDTH;
-
 public class MainMenuScreen extends ScreenAdapter {
     private final Asteroid game;
     private final Skin skin;
@@ -31,7 +28,7 @@ public class MainMenuScreen extends ScreenAdapter {
 
         skin = AssetsHelper.loadUiSkin();
 
-        viewport = new ExtendViewport(FULL_SCREEN_WIDTH, FULL_SCREEN_HEIGHT);
+        viewport = new ExtendViewport(game.screenWidth, game.screenHeight);
 
         stage = new Stage(viewport);
 

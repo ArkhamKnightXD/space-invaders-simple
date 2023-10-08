@@ -44,5 +44,7 @@ public class AlienBullet extends GameObject {
     public void collision() {
 
         setToDestroy = true;
+
+        super.dispose();
     }
 }

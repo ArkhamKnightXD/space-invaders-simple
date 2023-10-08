@@ -17,9 +17,6 @@ import knight.arkham.helpers.AssetsHelper;
 import knight.arkham.helpers.GameDataHelper;
 import knight.arkham.screens.GameScreen;
 
-import static knight.arkham.helpers.Constants.FULL_SCREEN_HEIGHT;
-import static knight.arkham.helpers.Constants.FULL_SCREEN_WIDTH;
-
 public class PauseMenu {
     private final Asteroid game;
     public final Stage stage;
@@ -29,7 +26,7 @@ public class PauseMenu {
 
         game = Asteroid.INSTANCE;
 
-        Viewport viewport = new ExtendViewport(FULL_SCREEN_WIDTH, FULL_SCREEN_HEIGHT);
+        Viewport viewport = new ExtendViewport(game.screenWidth, game.screenHeight);
 
         stage = new Stage(viewport);
 

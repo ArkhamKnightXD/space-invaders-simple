@@ -44,5 +44,7 @@ public class Bullet extends GameObject {
     public void collision() {
 
         setToDestroy = true;
+
+        super.dispose();
     }
 }
