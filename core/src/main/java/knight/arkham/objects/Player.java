@@ -26,9 +26,19 @@ public class Player extends GameObject {
     }
 
 
-    public void hitByTheBullet() {
-        actionSound.play(0.6f);
+    public boolean hitByTheBullet(AlienBullet alienBullet) {
 
-        Hud.takeAvailableHealth();
+        if (actualBounds.overlaps(alienBullet.getBounds())){
+
+            actionSound.play(0.6f);
+
+            Hud.takeAvailableHealth();
+
+            alienBullet.collision();
+
+            return true;
+        }
+
+        return false;
     }
 }

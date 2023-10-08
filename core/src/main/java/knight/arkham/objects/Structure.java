@@ -29,13 +29,25 @@ public class Structure extends GameObject {
             super.draw(batch);
     }
 
-    public void hitByTheBullet() {
+    public boolean hitByTheBullet(GameObject bullet, boolean isBullet) {
 
-        hitCounter++;
+        if (!isDestroyed && actualBounds.overlaps(bullet.getBounds())){
 
-        actionSound.play();
+            hitCounter++;
 
-        if (hitCounter == 5)
-            setToDestroy = true;
+            actionSound.play();
+
+            if (isBullet)
+                ((Bullet) bullet).collision();
+            else
+                ((AlienBullet) bullet).collision();
+
+            if (hitCounter == 5)
+                setToDestroy = true;
+
+            return true;
+        }
+
+        return false;
     }
 }

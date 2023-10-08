@@ -18,6 +18,8 @@ import knight.arkham.objects.*;
 import knight.arkham.scenes.Hud;
 import knight.arkham.scenes.PauseMenu;
 
+import java.util.Iterator;
+
 public class GameScreen extends ScreenAdapter {
     private final Asteroid game;
     private final OrthographicCamera camera;
@@ -63,24 +65,7 @@ public class GameScreen extends ScreenAdapter {
 
         bullets = new Array<>();
         alienBullets = new Array<>();
-        spawnAlienBullet();
-
         isGamePaused = false;
-    }
-
-    private void spawnAlienBullet() {
-
-        Rectangle bulletBounds = new Rectangle();
-
-        float firstAlienXPosition = aliens.get(0).getBounds().x;
-        float lastAlienXPosition = aliens.get(aliens.size - 1).getBounds().x;
-
-        bulletBounds.x = MathUtils.random(firstAlienXPosition, lastAlienXPosition - 32);
-        bulletBounds.y = 680;
-
-        alienBullets.add(new AlienBullet(new Vector2(bulletBounds.x, bulletBounds.y)));
-
-        lastAlienBulletTime = TimeUtils.nanoTime();
     }
 
 
@@ -127,21 +112,50 @@ public class GameScreen extends ScreenAdapter {
 
         player.update(deltaTime);
 
-        for (Structure structure : structures)
+        for (Structure structure : structures){
             structure.update();
 
-        for (Alien alien : aliens){
-            alien.update(deltaTime);
+            for (Iterator<Bullet> iterator = bullets.iterator(); iterator.hasNext();) {
 
-            for (Bullet bullet : bullets)
-                alien.hitByTheBullet(bullet);
+                Bullet bullet = iterator.next();
+
+                if (structure.hitByTheBullet(bullet, true))
+                    iterator.remove();
+            }
+
+            for (Iterator<AlienBullet> iterator = alienBullets.iterator(); iterator.hasNext();) {
+
+                AlienBullet alienBullet = iterator.next();
+
+                if (structure.hitByTheBullet(alienBullet, false))
+                    iterator.remove();
+            }
         }
 
-        for (AlienBullet alienBullet : alienBullets)
+        for (Iterator<AlienBullet> iterator = alienBullets.iterator(); iterator.hasNext();) {
+
+            AlienBullet alienBullet = iterator.next();
+
             alienBullet.update(deltaTime);
+
+            if(player.hitByTheBullet(alienBullet) || alienBullet.getBounds().y < 300)
+                iterator.remove();
+        }
 
         if(TimeUtils.nanoTime() - lastAlienBulletTime > 2000000000)
             spawnAlienBullet();
+
+        for (Alien alien : aliens) {
+            alien.update(deltaTime);
+
+            for (Iterator<Bullet> iterator = bullets.iterator(); iterator.hasNext();) {
+
+                Bullet bullet = iterator.next();
+
+                if (alien.hitByTheBullet(bullet) || bullet.getBounds().y > 1000)
+                    iterator.remove();
+            }
+        }
 
         for (Bullet bullet : bullets)
             bullet.update(deltaTime);
@@ -162,7 +176,20 @@ public class GameScreen extends ScreenAdapter {
         }
     }
 
+    private void spawnAlienBullet() {
 
+        Rectangle bulletBounds = new Rectangle();
+
+        float firstAlienXPosition = aliens.get(0).getBounds().x;
+        float lastAlienXPosition = aliens.get(aliens.size - 1).getBounds().x;
+
+        bulletBounds.x = MathUtils.random(firstAlienXPosition, lastAlienXPosition - 32);
+        bulletBounds.y = 680;
+
+        alienBullets.add(new AlienBullet(new Vector2(bulletBounds.x, bulletBounds.y)));
+
+        lastAlienBulletTime = TimeUtils.nanoTime();
+    }
 
     @Override
     public void render(float deltaTime) {

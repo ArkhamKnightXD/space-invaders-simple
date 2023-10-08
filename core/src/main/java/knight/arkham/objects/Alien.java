@@ -70,9 +70,9 @@ public class Alien extends GameObject {
     }
 
 
-    public void hitByTheBullet(Bullet bullet) {
+    public boolean hitByTheBullet(Bullet bullet) {
 
-        if (!bullet.isDestroyed && !isDestroyed && actualBounds.overlaps(bullet.getBounds())){
+        if (!isDestroyed && actualBounds.overlaps(bullet.getBounds())){
             setToDestroy = true;
 
             Hud.addScore(alienPoints);
@@ -80,6 +80,10 @@ public class Alien extends GameObject {
             actionSound.play(0.6f);
 
             bullet.collision();
+
+            return true;
         }
+
+        return false;
     }
 }
