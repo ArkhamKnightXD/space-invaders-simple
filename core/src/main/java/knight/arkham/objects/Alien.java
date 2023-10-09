@@ -2,6 +2,7 @@ package knight.arkham.objects;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import knight.arkham.scenes.Hud;
 
 public class Alien extends GameObject {
@@ -56,6 +57,8 @@ public class Alien extends GameObject {
     private void destroyAlien() {
 
         isDestroyed = true;
+
+        super.dispose();
     }
 
     @Override
@@ -80,5 +83,9 @@ public class Alien extends GameObject {
         }
 
         return false;
+    }
+
+    public Vector2 getPosition(){
+        return new Vector2(actualBounds.x, actualBounds.y);
     }
 }

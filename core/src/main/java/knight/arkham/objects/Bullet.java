@@ -30,6 +30,8 @@ public class Bullet extends GameObject {
     private void destroyBullet() {
 
         isDestroyed = true;
+
+        super.dispose();
     }
 
     @Override
@@ -40,9 +42,6 @@ public class Bullet extends GameObject {
     }
 
     public void collision() {
-
         setToDestroy = true;
-
-        super.dispose();
     }
 }

@@ -3,7 +3,6 @@ package knight.arkham.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
@@ -13,7 +12,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.TimeUtils;
 import knight.arkham.Asteroid;
-import knight.arkham.helpers.AssetsHelper;
+import knight.arkham.helpers.GameDataHelper;
 import knight.arkham.objects.*;
 import knight.arkham.scenes.Hud;
 import knight.arkham.scenes.PauseMenu;
@@ -28,7 +27,6 @@ public class GameScreen extends ScreenAdapter {
     private final Player player;
     private final Array<Structure> structures;
     private final Array<Alien> aliens;
-    private final Sound winSound;
     private final Array<Bullet> bullets;
     private final Array<AlienBullet> alienBullets;
     private long lastAlienBulletTime;
@@ -58,8 +56,6 @@ public class GameScreen extends ScreenAdapter {
 
         bullets = new Array<>();
         alienBullets = new Array<>();
-
-        winSound = AssetsHelper.loadSound("win.wav");
 
         hud = new Hud();
         pauseMenu = new PauseMenu();
@@ -128,6 +124,9 @@ public class GameScreen extends ScreenAdapter {
             }
         }
 
+        if(TimeUtils.nanoTime() - lastAlienBulletTime > 2000000000)
+            spawnAlienBullet();
+
         for (Iterator<AlienBullet> iterator = alienBullets.iterator(); iterator.hasNext();) {
 
             AlienBullet alienBullet = iterator.next();
@@ -138,18 +137,24 @@ public class GameScreen extends ScreenAdapter {
                 iterator.remove();
         }
 
-        if(TimeUtils.nanoTime() - lastAlienBulletTime > 2000000000)
-            spawnAlienBullet();
+        for (Iterator<Alien> aliensIterator = aliens.iterator(); aliensIterator.hasNext();) {
 
-        for (Alien alien : aliens) {
+            Alien alien = aliensIterator.next();
+
             alien.update(deltaTime);
 
-            for (Iterator<Bullet> iterator = bullets.iterator(); iterator.hasNext();) {
+            for (Iterator<Bullet> bulletsIterator = bullets.iterator(); bulletsIterator.hasNext();) {
 
-                Bullet bullet = iterator.next();
+                Bullet bullet = bulletsIterator.next();
 
-                if (alien.hitByTheBullet(bullet) || bullet.getBounds().y > 1000)
-                    iterator.remove();
+                if (alien.hitByTheBullet(bullet)) {
+
+                    bulletsIterator.remove();
+                    aliensIterator.remove();
+                }
+
+                else if (bullet.getBounds().y > 1000)
+                    bulletsIterator.remove();
             }
         }
 
@@ -176,15 +181,22 @@ public class GameScreen extends ScreenAdapter {
 
         Rectangle bulletBounds = new Rectangle();
 
-        float firstAlienXPosition = aliens.get(0).getBounds().x;
-        float lastAlienXPosition = aliens.get(aliens.size - 1).getBounds().x;
+        Vector2 firstAlienPosition = aliens.get(0).getPosition();
+        Vector2 lastAlienPosition = aliens.get(aliens.size - 1).getPosition();
 
-        bulletBounds.x = MathUtils.random(firstAlienXPosition, lastAlienXPosition - 32);
-        bulletBounds.y = 680;
+        bulletBounds.x = MathUtils.random(firstAlienPosition.x, lastAlienPosition.x - 32);
+        bulletBounds.y = MathUtils.random(firstAlienPosition.y, lastAlienPosition.y - 32);
 
         alienBullets.add(new AlienBullet(new Vector2(bulletBounds.x, bulletBounds.y)));
 
         lastAlienBulletTime = TimeUtils.nanoTime();
+    }
+
+    private void finishTheGame() {
+
+        GameDataHelper.saveHighScore();
+
+        game.setScreen(new MainMenuScreen());
     }
 
     @Override
@@ -192,7 +204,10 @@ public class GameScreen extends ScreenAdapter {
 
         ScreenUtils.clear(0, 0, 0, 0);
 
-        if (!isGamePaused) {
+        if (aliens.size == 0 || Player.livesQuantity == 0)
+            finishTheGame();
+
+        else if (!isGamePaused) {
             update(deltaTime);
             draw();
         } else {
@@ -211,19 +226,19 @@ public class GameScreen extends ScreenAdapter {
 
         batch.begin();
 
-        player.draw(batch);
-
         for (Alien alien : aliens)
             alien.draw(batch);
-
-        for (Bullet bullet : bullets)
-            bullet.draw(batch);
 
         for (AlienBullet alienBullet : alienBullets)
             alienBullet.draw(batch);
 
         for (Structure structure : structures)
             structure.draw(batch);
+
+        for (Bullet bullet : bullets)
+            bullet.draw(batch);
+
+        player.draw(batch);
 
         batch.end();
 
@@ -241,13 +256,9 @@ public class GameScreen extends ScreenAdapter {
         player.dispose();
         hud.dispose();
         pauseMenu.dispose();
-        winSound.dispose();
         batch.dispose();
 
         for (Structure structure : structures)
             structure.dispose();
-
-        for (Alien alien : aliens)
-            alien.dispose();
     }
 }
