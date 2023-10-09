@@ -13,14 +13,24 @@ public class GameDataHelper {
         Preferences preferences = Gdx.app.getPreferences(dataFilename);
 
         if (Player.score < loadHighScore())
-            return;
+            preferences.putInteger("playerScore", Player.score);
 
-        preferences.putInteger("playerScore", Player.score);
+        else {
+            preferences.putInteger("playerScore", Player.score);
+            preferences.putInteger("highScore", Player.score);
+        }
 
         preferences.flush();
     }
 
     public static int loadHighScore(){
+
+        Preferences preferences = Gdx.app.getPreferences(dataFilename);
+
+        return preferences.getInteger("highScore");
+    }
+
+    public static int loadPlayerScore(){
 
         Preferences preferences = Gdx.app.getPreferences(dataFilename);
 

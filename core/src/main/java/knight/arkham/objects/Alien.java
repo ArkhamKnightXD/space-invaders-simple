@@ -48,7 +48,7 @@ public class Alien extends GameObject {
             shouldGoDown = true;
         } else if (shouldGoDown) {
 
-            actualBounds.y -= 40;
+            actualBounds.y -= 20;
 
             shouldGoDown = false;
         }

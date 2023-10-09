@@ -24,6 +24,7 @@ public class GameScreen extends ScreenAdapter {
     public SpriteBatch batch;
     private final Hud hud;
     private final PauseMenu pauseMenu;
+    private final SpaceShip spaceShip;
     private final Player player;
     private final Array<Structure> structures;
     private final Array<Alien> aliens;
@@ -56,6 +57,8 @@ public class GameScreen extends ScreenAdapter {
 
         bullets = new Array<>();
         alienBullets = new Array<>();
+
+        spaceShip = new SpaceShip(1600, 900);
 
         hud = new Hud();
         pauseMenu = new PauseMenu();
@@ -103,6 +106,8 @@ public class GameScreen extends ScreenAdapter {
     private void update(float deltaTime) {
 
         player.update(deltaTime);
+
+        spaceShip.update(deltaTime);
 
         for (Structure structure : structures){
             structure.update();
@@ -158,12 +163,23 @@ public class GameScreen extends ScreenAdapter {
             }
         }
 
-        for (Bullet bullet : bullets)
-            bullet.update(deltaTime);
-
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE))
             shootBullet(deltaTime);
+
+        for (Iterator<Bullet> bulletsIterator = bullets.iterator(); bulletsIterator.hasNext();) {
+
+            Bullet bullet = bulletsIterator.next();
+
+            bullet.update(deltaTime);
+
+            if (spaceShip.hitByTheBullet(bullet))
+                bulletsIterator.remove();
+        }
     }
+
+//        for (Bullet bullet : bullets)
+//            bullet.update(deltaTime);
+
 
     private void shootBullet(float deltaTime) {
 
@@ -225,6 +241,8 @@ public class GameScreen extends ScreenAdapter {
         batch.setProjectionMatrix(camera.combined);
 
         batch.begin();
+
+        spaceShip.draw(batch);
 
         for (Alien alien : aliens)
             alien.draw(batch);

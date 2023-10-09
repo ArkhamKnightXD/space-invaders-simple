@@ -3,8 +3,11 @@ package knight.arkham.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -14,6 +17,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import knight.arkham.Asteroid;
 import knight.arkham.helpers.AssetsHelper;
+import knight.arkham.helpers.GameDataHelper;
 
 public class MainMenuScreen extends ScreenAdapter {
     private final Asteroid game;
@@ -35,6 +39,15 @@ public class MainMenuScreen extends ScreenAdapter {
         Table table = new Table();
 
         table.setFillParent(true);
+
+        Label pauseLabel = new Label("Your score: " + GameDataHelper.loadPlayerScore(), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        Label scoreLabel = new Label("High Score: " + GameDataHelper.loadHighScore(), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+
+        table.add(pauseLabel).expandX().padBottom(15);
+        table.row();
+
+        table.add(scoreLabel).expandX().padBottom(15);
+        table.row();
 
         stage.addActor(table);
 
