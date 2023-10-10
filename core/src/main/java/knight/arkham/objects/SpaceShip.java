@@ -9,13 +9,14 @@ public class SpaceShip extends GameObject {
     private boolean setToDestroy;
     private float stateTimer;
     private final float velocityX;
+    private boolean shouldGoRight;
 
-    public SpaceShip(int positionX, int positionY) {
+    public SpaceShip() {
         super(
-            new Rectangle(positionX, positionY, 32, 32),
+            new Rectangle(1600, 900, 32, 32),
             "images/alien-ship.png", "okay.wav"
         );
-        velocityX = 100;
+        velocityX = 150;
     }
 
     public void update(float deltaTime) {
@@ -23,18 +24,39 @@ public class SpaceShip extends GameObject {
         if (setToDestroy && !isDestroyed)
             destroySpaceShip();
 
-        stateTimer += deltaTime;
+        if (!shouldGoRight) {
 
-        if (stateTimer > 5) {
-            actualBounds.x -= velocityX * deltaTime;
+            if (actualBounds.x < 450){
+                stateTimer += deltaTime;
+
+                if (stateTimer > 10){
+                    shouldGoRight = true;
+
+                    stateTimer = 0;
+                }
+            }
+
+            else
+                actualBounds.x -= velocityX * deltaTime;
+        }
+
+        if (shouldGoRight){
+            actualBounds.x += velocityX * deltaTime;
+
+            if (actualBounds.x > 1000){
+                stateTimer += deltaTime;
+
+                if (stateTimer > 10){
+                    shouldGoRight = false;
+
+                    stateTimer = 0;
+                }
+            }
         }
     }
 
     private void destroySpaceShip() {
-
         isDestroyed = true;
-
-        super.dispose();
     }
 
     @Override
@@ -47,11 +69,11 @@ public class SpaceShip extends GameObject {
     public boolean hitByTheBullet(Bullet bullet) {
 
         if (!isDestroyed && actualBounds.overlaps(bullet.getBounds())){
+
             setToDestroy = true;
 
             Hud.addScore(50);
 
-//            Todo the sounds doesn't work.
             actionSound.play();
 
             bullet.collision();

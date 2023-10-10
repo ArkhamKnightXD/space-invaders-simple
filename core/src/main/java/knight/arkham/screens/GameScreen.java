@@ -58,7 +58,7 @@ public class GameScreen extends ScreenAdapter {
         bullets = new Array<>();
         alienBullets = new Array<>();
 
-        spaceShip = new SpaceShip(1600, 900);
+        spaceShip = new SpaceShip();
 
         hud = new Hud();
         pauseMenu = new PauseMenu();
@@ -107,7 +107,18 @@ public class GameScreen extends ScreenAdapter {
 
         player.update(deltaTime);
 
-        spaceShip.update(deltaTime);
+        if(TimeUtils.nanoTime() - lastAlienBulletTime > 2000000000)
+            spawnAlienBullet();
+
+        for (Iterator<AlienBullet> iterator = alienBullets.iterator(); iterator.hasNext();) {
+
+            AlienBullet alienBullet = iterator.next();
+
+            alienBullet.update(deltaTime);
+
+            if(player.hitByTheBullet(alienBullet) || alienBullet.getBounds().y < 300)
+                iterator.remove();
+        }
 
         for (Structure structure : structures){
             structure.update();
@@ -127,19 +138,6 @@ public class GameScreen extends ScreenAdapter {
                 if (structure.hitByTheBullet(alienBullet, false))
                     iterator.remove();
             }
-        }
-
-        if(TimeUtils.nanoTime() - lastAlienBulletTime > 2000000000)
-            spawnAlienBullet();
-
-        for (Iterator<AlienBullet> iterator = alienBullets.iterator(); iterator.hasNext();) {
-
-            AlienBullet alienBullet = iterator.next();
-
-            alienBullet.update(deltaTime);
-
-            if(player.hitByTheBullet(alienBullet) || alienBullet.getBounds().y < 300)
-                iterator.remove();
         }
 
         for (Iterator<Alien> aliensIterator = aliens.iterator(); aliensIterator.hasNext();) {
@@ -165,6 +163,8 @@ public class GameScreen extends ScreenAdapter {
 
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE))
             shootBullet(deltaTime);
+
+        spaceShip.update(deltaTime);
 
         for (Iterator<Bullet> bulletsIterator = bullets.iterator(); bulletsIterator.hasNext();) {
 
@@ -272,6 +272,7 @@ public class GameScreen extends ScreenAdapter {
     public void dispose() {
 
         player.dispose();
+        spaceShip.dispose();
         hud.dispose();
         pauseMenu.dispose();
         batch.dispose();
