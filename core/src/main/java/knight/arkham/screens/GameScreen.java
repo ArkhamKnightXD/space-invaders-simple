@@ -123,6 +123,7 @@ public class GameScreen extends ScreenAdapter {
         for (Structure structure : structures){
             structure.update();
 
+            //Todo tratar de refactorizar los distintos manejos de colisiones..
             for (Iterator<Bullet> iterator = bullets.iterator(); iterator.hasNext();) {
 
                 Bullet bullet = iterator.next();
@@ -176,10 +177,6 @@ public class GameScreen extends ScreenAdapter {
                 bulletsIterator.remove();
         }
     }
-
-//        for (Bullet bullet : bullets)
-//            bullet.update(deltaTime);
-
 
     private void shootBullet(float deltaTime) {
 

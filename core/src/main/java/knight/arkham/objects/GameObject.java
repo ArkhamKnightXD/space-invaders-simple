@@ -8,9 +8,10 @@ import knight.arkham.helpers.AssetsHelper;
 
 public abstract class GameObject {
     protected final Rectangle actualBounds;
-    protected final Texture sprite;
     protected final Sound actionSound;
+    private final Texture sprite;
 
+    //Todo cambiar orden de los campos.
     protected GameObject(Rectangle bounds, String spritePath, String soundPath) {
         actualBounds = bounds;
         sprite = new Texture(spritePath);

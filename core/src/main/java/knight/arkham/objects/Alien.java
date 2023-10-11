@@ -31,13 +31,13 @@ public class Alien extends GameObject {
         stateTimer += deltaTime;
         changeVelocityTimer += deltaTime;
 
-        if (stateTimer > 0.5f){
+        if (stateTimer > 0.5f) {
 
             actualBounds.x += velocityX;
 
             stateTimer = 0;
 
-        } else if (changeVelocityTimer > 4.5f){
+        } else if (changeVelocityTimer > 4.5f) {
 
             velocityX *= -1;
             actualBounds.x += velocityX;

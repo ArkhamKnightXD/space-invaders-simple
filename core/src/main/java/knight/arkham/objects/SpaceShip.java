@@ -19,6 +19,7 @@ public class SpaceShip extends GameObject {
         velocityX = 150;
     }
 
+    //Todo refactorizar update si es posible.
     public void update(float deltaTime) {
 
         if (setToDestroy && !isDestroyed)
