@@ -11,7 +11,7 @@ public class Player extends GameObject {
     private final int speed;
 
     public Player(Rectangle bounds) {
-        super(bounds, "images/player-ship.png", "laser.wav");
+        super(bounds,  "laser.wav", "images/player-ship.png");
         score = 0;
         livesQuantity = 2;
         speed = 400;
@@ -28,7 +28,7 @@ public class Player extends GameObject {
 
     public boolean hitByTheBullet(AlienBullet alienBullet) {
 
-        if (actualBounds.overlaps(alienBullet.getBounds())){
+        if (actualBounds.overlaps(alienBullet.getBounds())) {
 
             actionSound.play(0.6f);
 

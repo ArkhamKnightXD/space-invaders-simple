@@ -17,7 +17,7 @@ public class Alien extends GameObject {
     public Alien(int positionX, int positionY, String spritePath, int points) {
         super(
             new Rectangle(720 + positionX, 850 - positionY, 32, 32),
-            spritePath, "okay.wav"
+            "okay.wav", spritePath
         );
         alienPoints = points;
         velocityX = 20;
@@ -70,7 +70,7 @@ public class Alien extends GameObject {
 
     public boolean hitByTheBullet(Bullet bullet) {
 
-        if (!isDestroyed && actualBounds.overlaps(bullet.getBounds())){
+        if (!isDestroyed && actualBounds.overlaps(bullet.actualBounds)) {
             setToDestroy = true;
 
             Hud.addScore(alienPoints);

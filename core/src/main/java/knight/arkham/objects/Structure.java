@@ -9,7 +9,7 @@ public class Structure extends GameObject {
     private boolean isDestroyed;
 
     public Structure(Rectangle bounds) {
-        super(bounds, "images/structure.png", "break.ogg");
+        super(bounds, "break.ogg", "images/structure.png");
     }
 
     public void update(){
@@ -18,7 +18,6 @@ public class Structure extends GameObject {
     }
 
     private void destroyBody() {
-
         isDestroyed = true;
     }
 
@@ -31,7 +30,7 @@ public class Structure extends GameObject {
 
     public boolean hitByTheBullet(GameObject bullet, boolean isBullet) {
 
-        if (!isDestroyed && actualBounds.overlaps(bullet.getBounds())){
+        if (!isDestroyed && actualBounds.overlaps(bullet.actualBounds)) {
 
             hitCounter++;
 

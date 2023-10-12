@@ -11,11 +11,10 @@ public abstract class GameObject {
     protected final Sound actionSound;
     private final Texture sprite;
 
-    //Todo cambiar orden de los campos.
-    protected GameObject(Rectangle bounds, String spritePath, String soundPath) {
+    protected GameObject(Rectangle bounds, String soundPath, String spritePath) {
         actualBounds = bounds;
-        sprite = new Texture(spritePath);
         actionSound = AssetsHelper.loadSound(soundPath);
+        sprite = new Texture(spritePath);
     }
 
     public void draw(Batch batch) {
