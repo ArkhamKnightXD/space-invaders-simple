@@ -26,7 +26,7 @@ public class Player extends GameObject {
             actualBounds.x -= speed * deltaTime;
     }
 
-    public boolean hitByTheBullet(AlienBullet alienBullet) {
+    public boolean hasCollisionWithTheBullet(AlienBullet alienBullet) {
 
         if (actualBounds.overlaps(alienBullet.getBounds())) {
 

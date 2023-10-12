@@ -68,7 +68,7 @@ public class Alien extends GameObject {
             super.draw(batch);
     }
 
-    public boolean hitByTheBullet(Bullet bullet) {
+    public boolean hasCollisionWithTheBullet(Bullet bullet) {
 
         if (!isDestroyed && actualBounds.overlaps(bullet.actualBounds)) {
             setToDestroy = true;

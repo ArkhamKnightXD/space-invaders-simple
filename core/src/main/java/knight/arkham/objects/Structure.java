@@ -28,7 +28,7 @@ public class Structure extends GameObject {
             super.draw(batch);
     }
 
-    public boolean hitByTheBullet(GameObject bullet, boolean isBullet) {
+    public boolean hasCollisionWithTheBullet(GameObject bullet, boolean isBullet) {
 
         if (!isDestroyed && actualBounds.overlaps(bullet.actualBounds)) {
 

@@ -116,19 +116,19 @@ public class GameScreen extends ScreenAdapter {
 
             alienBullet.update(deltaTime);
 
-            if(player.hitByTheBullet(alienBullet) || alienBullet.getBounds().y < 300)
+            if(player.hasCollisionWithTheBullet(alienBullet) || alienBullet.getBounds().y < 300)
                 iterator.remove();
         }
 
         for (Structure structure : structures){
+
             structure.update();
 
-            //Todo tratar de refactorizar los distintos manejos de colisiones..
             for (Iterator<Bullet> iterator = bullets.iterator(); iterator.hasNext();) {
 
                 Bullet bullet = iterator.next();
 
-                if (structure.hitByTheBullet(bullet, true))
+                if (structure.hasCollisionWithTheBullet(bullet, true))
                     iterator.remove();
             }
 
@@ -136,7 +136,7 @@ public class GameScreen extends ScreenAdapter {
 
                 AlienBullet alienBullet = iterator.next();
 
-                if (structure.hitByTheBullet(alienBullet, false))
+                if (structure.hasCollisionWithTheBullet(alienBullet, false))
                     iterator.remove();
             }
         }
@@ -151,7 +151,7 @@ public class GameScreen extends ScreenAdapter {
 
                 Bullet bullet = bulletsIterator.next();
 
-                if (alien.hitByTheBullet(bullet)) {
+                if (alien.hasCollisionWithTheBullet(bullet)) {
 
                     bulletsIterator.remove();
                     aliensIterator.remove();
@@ -173,7 +173,7 @@ public class GameScreen extends ScreenAdapter {
 
             bullet.update(deltaTime);
 
-            if (spaceShip.hitByTheBullet(bullet))
+            if (spaceShip.hasCollisionWithTheBullet(bullet))
                 bulletsIterator.remove();
         }
     }
@@ -217,7 +217,7 @@ public class GameScreen extends ScreenAdapter {
 
         ScreenUtils.clear(0, 0, 0, 0);
 
-        if (aliens.size == 0 || Player.livesQuantity == 0)
+        if (aliens.size == 0 || Player.livesQuantity < 0)
             finishTheGame();
 
         else if (!isGamePaused) {
