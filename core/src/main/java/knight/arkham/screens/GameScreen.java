@@ -122,8 +122,6 @@ public class GameScreen extends ScreenAdapter {
 
         for (Structure structure : structures){
 
-            structure.update();
-
             for (Iterator<Bullet> iterator = bullets.iterator(); iterator.hasNext();) {
 
                 Bullet bullet = iterator.next();

@@ -5,20 +5,10 @@ import com.badlogic.gdx.math.Rectangle;
 
 public class Structure extends GameObject {
     private int hitCounter;
-    private boolean setToDestroy;
     private boolean isDestroyed;
 
     public Structure(Rectangle bounds) {
         super(bounds, "break.ogg", "images/structure.png");
-    }
-
-    public void update(){
-        if (setToDestroy && !isDestroyed)
-            destroyBody();
-    }
-
-    private void destroyBody() {
-        isDestroyed = true;
     }
 
     @Override
@@ -32,9 +22,9 @@ public class Structure extends GameObject {
 
         if (!isDestroyed && actualBounds.overlaps(bullet.actualBounds)) {
 
-            hitCounter++;
-
             actionSound.play();
+
+            hitCounter++;
 
             if (isBullet)
                 ((Bullet) bullet).collision();
@@ -42,7 +32,7 @@ public class Structure extends GameObject {
                 ((AlienBullet) bullet).collision();
 
             if (hitCounter == 5)
-                setToDestroy = true;
+                isDestroyed = true;
 
             return true;
         }

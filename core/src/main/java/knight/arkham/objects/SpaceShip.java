@@ -6,7 +6,6 @@ import knight.arkham.scenes.Hud;
 
 public class SpaceShip extends GameObject {
     private boolean isDestroyed;
-    private boolean setToDestroy;
     private float stateTimer;
     private boolean shouldGoRight;
     private final float velocityX;
@@ -20,9 +19,6 @@ public class SpaceShip extends GameObject {
     }
 
     public void update(float deltaTime) {
-
-        if (setToDestroy && !isDestroyed)
-            destroySpaceShip();
 
         if (!shouldGoRight)
             moveToTheLeft(deltaTime);
@@ -63,10 +59,6 @@ public class SpaceShip extends GameObject {
             actualBounds.x -= velocityX * deltaTime;
     }
 
-    private void destroySpaceShip() {
-        isDestroyed = true;
-    }
-
     @Override
     public void draw(Batch batch) {
 
@@ -78,7 +70,7 @@ public class SpaceShip extends GameObject {
 
         if (!isDestroyed && actualBounds.overlaps(bullet.actualBounds)) {
 
-            setToDestroy = true;
+            isDestroyed = true;
 
             Hud.addScore(50);
 
