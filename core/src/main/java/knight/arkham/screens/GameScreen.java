@@ -31,7 +31,7 @@ public class GameScreen extends ScreenAdapter {
     private final Array<Bullet> bullets;
     private final Array<AlienBullet> alienBullets;
     private long lastAlienBulletTime;
-    private float bulletSpawnTime;
+    private float lastPlayerBulletTime;
     public static boolean isGamePaused;
 
     public GameScreen() {
@@ -107,7 +107,7 @@ public class GameScreen extends ScreenAdapter {
 
         player.update(deltaTime);
 
-        if(TimeUtils.nanoTime() - lastAlienBulletTime > 2000000000)
+        if(TimeUtils.nanoTime() - lastAlienBulletTime > 1000000000)
             spawnAlienBullet();
 
         for (Iterator<AlienBullet> iterator = alienBullets.iterator(); iterator.hasNext();) {
@@ -161,7 +161,7 @@ public class GameScreen extends ScreenAdapter {
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE))
-            shootBullet(deltaTime);
+            shootBullet();
 
         spaceShip.update(deltaTime);
 
@@ -176,15 +176,14 @@ public class GameScreen extends ScreenAdapter {
         }
     }
 
-    private void shootBullet(float deltaTime) {
+    private void shootBullet() {
 
-        bulletSpawnTime += deltaTime;
-
-        if (bulletSpawnTime > 1) {
+        //shoot a bullet every 1 second
+        if (TimeUtils.nanoTime() - lastPlayerBulletTime > 1000000000) {
 
             bullets.add(new Bullet(new Vector2(player.getBounds().x, player.getBounds().y)));
 
-            bulletSpawnTime = 0;
+            lastPlayerBulletTime = TimeUtils.nanoTime();
         }
     }
 
