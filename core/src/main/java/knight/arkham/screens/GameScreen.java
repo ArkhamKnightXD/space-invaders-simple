@@ -189,15 +189,11 @@ public class GameScreen extends ScreenAdapter {
 
     private void spawnAlienBullet() {
 
-        Rectangle bulletBounds = new Rectangle();
+        int randomAlienIndex = MathUtils.random(0, aliens.size - 1);
 
-        Vector2 firstAlienPosition = aliens.get(0).getPosition();
-        Vector2 lastAlienPosition = aliens.get(aliens.size - 1).getPosition();
+        Alien alien = aliens.get(randomAlienIndex);
 
-        bulletBounds.x = MathUtils.random(firstAlienPosition.x, lastAlienPosition.x - 32);
-        bulletBounds.y = MathUtils.random(firstAlienPosition.y, lastAlienPosition.y - 32);
-
-        alienBullets.add(new AlienBullet(new Vector2(bulletBounds.x, bulletBounds.y)));
+        alienBullets.add(new AlienBullet(new Vector2(alien.getBounds().x, alien.getBounds().y)));
 
         lastAlienBulletTime = TimeUtils.nanoTime();
     }
